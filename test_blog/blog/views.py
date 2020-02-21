@@ -1,11 +1,13 @@
 from django.views import generic
+from django.shortcuts import render, get_object_or_404
 from .models import Post
 from .forms import CommentForm
-from django.shortcuts import render, get_object_or_404
 
-class PostLists(generic.ListView):
-    queryset = Post.objects.filter(status=1).order_by('-created_on')
-    template_name = 'index.html'
+# Class Based Pagination
+# class PostLists(generic.ListView):
+#     queryset = Post.objects.filter(status=1).order_by('-created_on')
+#     template_name = 'index.html'
+#     paginate_by = 3
 
 #class PostDetail(generic.DetailView):
 #    model = Post
@@ -15,6 +17,26 @@ class PostLists(generic.ListView):
 #def index(request):
 #    my_dict = {"insert_me": "I am from views.py"}
 #    return render(request,'index.html',context=my_dict)
+
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
+# Function based pagination
+def PostLists(request):
+    object_list = Post.objects.filter(status=1).order_by('-created_on')
+    paginator = Paginator(object_list, 3)  # 3 posts in each page
+    page = request.GET.get('page')
+    try:
+        post_list = paginator.page(page)
+    except PageNotAnInteger:
+            # If page is not an integer deliver the first page
+        post_list = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        post_list = paginator.page(paginator.num_pages)
+    return render(request,
+                  'index.html',
+                  {'page': page,
+                   'post_list': post_list})
 
 def post_detail(request, slug):
     template_name = 'post_detail.html'
