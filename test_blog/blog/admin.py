@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django_summernote.admin import SummernoteModelAdmin
-from .models import Post 
+from .models import Post
 
 # Old editing option
 # class PostAdmin(admin.ModelAdmin):
@@ -11,6 +11,7 @@ from .models import Post
 
 class PostAdmin(SummernoteModelAdmin):
     summernote_fields = ('content',)
+    prepopulated_fields = {'slug': ('title',)}
 
 admin.site.register(Post, PostAdmin)
 
