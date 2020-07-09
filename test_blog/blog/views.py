@@ -60,3 +60,26 @@ def post_detail(request, slug):
                                            'comments': comments,
                                            'new_comment': new_comment,
                                            'comment_form': comment_form})
+
+from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse
+from django.shortcuts import render
+from .forms import ContactForm
+
+
+def contact_view(request):
+    new_message = None
+    form = ContactForm()
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid() and request.recaptcha_is_valid:
+            name = form.cleaned_data['name']
+            from_email = form.cleaned_data['from_email']
+            subject = "{0}. email: {1}".format(name, from_email)
+            message = form.cleaned_data['message']
+            try:
+                send_mail(subject, message, 'contact_form@example.com', ['my_contact@example.com'])
+                new_message = message
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+    return render(request, "contact.html", {'form': form, 'new_message': new_message})

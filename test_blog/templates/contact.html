@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script src="https://www.google.com/recaptcha/api.js?hl=en" async defer></script>
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <h1>Contact me</h1>
+        {% if new_message %}
+        <p style="text-align:center">Your message has been sent. I will try to read it as soon as possible. Thank you!</p>
+        {% else %}
+        <form class="card pt-0 no-borders" method="POST">
+            <input type="text" class="form-control" placeholder="Name" 
+                name="{{ form.name.name }}"
+                id="{{ form.name.id_for_label }}"
+                {% if form.name.value != None %}value="{{ form.name.value|stringformat:'s' }}"{% endif %}
+                maxlength="{{ form.name.field.max_length }}"
+                {% if form.name.field.required %}required{% endif %}>
+            <input type="email" class="form-control" placeholder="Email" 
+                name="{{ form.from_email.name }}"
+                id="{{ form.from_email.id_for_label }}"
+                {% if form.from_email.value != None %}value="{{ form.from_email.value|stringformat:'s' }}"{% endif %}
+                maxlength="{{ form.from_email.field.max_length }}"
+                {% if form.from_email.field.required %}required{% endif %}>
+            <textarea class="form-control" rows="5" placeholder="Text Message" 
+                    name="{{ form.message.name }}"
+                    id="{{ form.message.id_for_label }}"
+                    maxlength="{{ form.message.field.max_length }}"
+                    {% if form.message.field.required %}required{% endif %}>{% if form.message.value != None %}{{ form.message.value|stringformat:'s' }}{% endif %}</textarea>
+                {% csrf_token %}
+                <!--reCAPTCHA Widget zone-->
+                <div class="g-recaptcha ml-auto mr-auto mb-4" data-sitekey="6Lcpqa4ZAAAAAPxNuoc7b81Tljx7bebrfP-Eq2ex"></div>
+                <!--end reCAPTCHA Widget zone-->
+                <br/>
+                <!--Displaying messages here-->
+                {% if messages %}
+                    <div class="alert alert-danger ml-auto mr-auto mb-4 text-center">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                <!--End displaying messages-->
+                <div class="row m-0">
+                    <button type="submit">Send</button>
+                </div>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

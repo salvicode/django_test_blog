@@ -154,3 +154,7 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 COMMENTS_APP = 'django_comments_xtd'
 COMMENTS_XTD_CONFIRM_EMAIL = False
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+G_CAPTCHA_SECRET_KEY = os.environ.get("G_CAPTCHA_SECRET_KEY", default='')

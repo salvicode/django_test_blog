@@ -11,4 +11,9 @@ class CommentForm(forms.ModelForm):
     helper = FormHelper()
     helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
     helper.form_method = 'POST'
-    
+
+
+class ContactForm(forms.Form):
+    name = forms.CharField(required=True)
+    from_email = forms.EmailField(required=True)
+    message = forms.CharField(widget=forms.Textarea, required=True)

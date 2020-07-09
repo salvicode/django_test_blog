@@ -18,5 +18,9 @@
     "django-html": "html"
 },
 "auto-close-tag.SublimeText3Mode": true,
-"auto-close-tag.fullMode": true
+"auto-close-tag.fullMode": true,
+"rest-client.environmentVariables": {
+
+},
+"python.envFile": "${workspaceFolder}/test_blog/.env"
 }
