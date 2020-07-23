@@ -20,6 +20,8 @@ from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from blog.sitemaps import PostSitemap
 from django.views.i18n import JavaScriptCatalog
+from blog.api.views import CustomCommentCreate
+from test_blog.decorators import check_recaptcha
 
 
 sitemaps = {
@@ -28,6 +30,7 @@ sitemaps = {
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('comments/api/comment/', check_recaptcha(CustomCommentCreate().as_view()), name='comments-xtd-api-create'),
     path('comments/', include('django_comments_xtd.urls')),
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
     path('', include('blog.urls')),

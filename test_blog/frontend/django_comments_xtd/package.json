@@ -26,6 +26,7 @@
     "bootstrap": "^4.4.1",
     "jquery": "^3.5.0",
     "md5": "^2.2.1",
+    "react-google-recaptcha": "^2.1.0",
     "remarkable": "^1.7.4"
   }
 }

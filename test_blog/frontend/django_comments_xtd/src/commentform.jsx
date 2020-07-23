@@ -5,7 +5,7 @@ import md5 from 'md5';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Remarkable from 'remarkable';
-
+import ReCAPTCHA from "react-google-recaptcha";
 import * as lib from './lib.js';
 
 
@@ -28,6 +28,7 @@ export class CommentForm extends React.Component {
     this.fhelp = <span className="form-text small invalid-feedback">
                    {django.gettext("This field is required.")}
                  </span>;
+    this.recaptchaRef = React.createRef();
   }
 
   handle_input_change(event) {
@@ -267,7 +268,8 @@ export class CommentForm extends React.Component {
       email: this.state.email,
       url: this.state.url,
       followup: this.state.followup,
-      reply_to: this.state.reply_to
+      reply_to: this.state.reply_to,
+      'g-recaptcha-response': this.recaptchaRef.current.getValue()
     };
     
     $.ajax({
@@ -395,6 +397,12 @@ export class CommentForm extends React.Component {
         
         <div className={btns_row_class}>
           <div className="offset-md-3 col-md-7">
+            <ReCAPTCHA
+              ref={this.recaptchaRef}
+              className="g-recaptcha"
+              sitekey="6Lcpqa4ZAAAAAPxNuoc7b81Tljx7bebrfP-Eq2ex"
+              hl="en"
+            />
             <button type="submit" name="post"
                     className={btn_submit_class}>{btn_label_send}</button>&nbsp;
             <button name="preview" className={btn_preview_class}
